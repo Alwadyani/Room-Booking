@@ -1,0 +1,16 @@
+phase 1   DONE
+- database: named = roombooking with table called = user
+- login
+- register  
+- index.php  
+- db.sql
+
+phase 2
+- need to aplly regix for email validation on register.php & login.php
+- need to make it available for everyone not just registerd users :: lines 3 to 10 in index.php 
+- apply PDO for the pages
+- user profile management:
+        + Develop user profile management features
+        + Implement profile editing functionality
+        + Create profile picture upload and management
+        + Design and implement the user profile pages
