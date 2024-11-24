@@ -14,3 +14,8 @@ phase 2
         + Implement profile editing functionality
         + Create profile picture upload and management
         + Design and implement the user profile pages
+
+
+last updates:
+connection.php update connect method to use PDO $conn => $db
+need to update other file to fit with PDO connection

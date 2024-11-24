@@ -1,4 +1,11 @@
 <?php
 session_start();
-$conn = mysqli_connect("localhost", "root", "", "roombooking");
+$dsn = 'mysql:host=localhost;dbname=roombooking';
+$username = 'root';
+$password = '';
+
+$db = new PDO($dsn,$username,$password);
+
+
+//$conn = mysqli_connect("localhost", "root", "", "roombooking");
 ?>
