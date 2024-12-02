@@ -7,5 +7,4 @@ $password = '';
 $db = new PDO($dsn,$username,$password);
 
 
-//$conn = mysqli_connect("localhost", "root", "", "roombooking");
 ?>
