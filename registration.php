@@ -1,19 +1,17 @@
 <?php
-require 'connection.php';
+include 'connection.php';
 if(isset($_SESSION['id'])){
     header("Location: index.php");
 }
-if(isset($_POST["submit"])){
+if($_SERVER["REQUEST_METHOD"] == "POST"){
     $name = $_POST["name"];
     $username = $_POST["username"];
     $email = $_POST["email"];
     $password = $_POST["password"];
     $confirmpassword = $_POST["confirmpassword"];
     $duplicate = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username' OR email = '$email'");
-   
         if(mysqli_num_rows($duplicate) > 0){
-            echo
-            "<script>alert('username or Email already exist');</script>";
+            echo "<script>alert('username or Email already exist');</script>";
         }
         else{
             if ($password !== $confirmpassword) {
