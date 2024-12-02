@@ -22,6 +22,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $query = "INSERT INTO user VALUES('','$name','$username','$email','$hashed_password')";
                 mysqli_query($conn,$query);
                 echo "<script>alert('Register Successful');</script>";
+                $_SESSION['id'] = true;
+                header("Location: index.php");
+
 
             }
         }
