@@ -87,7 +87,7 @@ else{
         }
 
         #about-us h2 span {
-            color: var(--colorSecond); /* Secondary color for the span */
+            color: var(--colorSecond); 
         }
 
         #about-us p {
@@ -114,88 +114,87 @@ else{
 
         /* Contact Us Section Styling */
         #contact-us {
-            background-color: #F2F5F5; /* Light background */
-            padding: 50px 0; /* Space above and below the section */
+            background-color: #F2F5F5; 
+            padding: 50px 0; 
             text-align: center;
         }
 
         #contact-us .section-container {
-            max-width: 800px; /* Set max-width for the content */
-            margin: 0 auto; /* Center the content */
+            max-width: 800px; 
+            margin: 0 auto;
             padding: 20px;
-            background-color: #ffffff; /* White background for the form */
-            border-radius: 10px; /* Rounded corners */
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Add shadow */
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
         }
 
         #contact-us h2 {
-            font-size: 2rem; /* Set font size for the heading */
-            color: var(--colorfirst); /* Primary color for heading */
+            font-size: 2rem; 
+            color: var(--colorfirst); 
             margin-bottom: 20px;
         }
 
         #contact-us h2 span {
-            color: var(--colorSecond); /* Secondary color for span */
+            color: var(--colorSecond); 
         }
 
         #contact-us p {
-            font-size: 1.1rem; /* Font size for the paragraph */
-            color: #555; /* Gray text color */
-            margin-bottom: 20px; /* Space below the paragraph */
+            font-size: 1.1rem; 
+            color: #555; 
+            margin-bottom: 20px; 
         }
 
         #contact-us .form-group {
-            margin-bottom: 20px; /* Space below each form group */
-            text-align: left; /* Align form labels and text areas to the left */
+            margin-bottom: 20px; 
+            text-align: left; 
         }
 
         #contact-us .form-group label {
-            font-size: 1rem; /* Font size for labels */
-            color: #333; /* Darker text color for labels */
-            display: block; /* Block display for proper spacing */
+            font-size: 1rem; 
+            color: #333; 
+            display: block; 
             margin-bottom: 5px;
         }
 
         #contact-us .form-group textarea {
-            width: 100%; /* Full width for the textarea */
+            width: 100%;
             padding: 10px;
-            font-size: 1rem; /* Font size for input text */
-            border: 1px solid var(--colorDisabled); /* Border color */
-            border-radius: 5px; /* Rounded corners */
-            resize: none; /* Disable resize option */
+            font-size: 1rem; 
+            border: 1px solid var(--colorDisabled); 
+            resize: none;
         }
 
         #contact-us .form-group textarea:focus {
             outline: none; /* Remove focus outline */
-            border-color: var(--colorSecond); /* Highlight border on focus */
-            box-shadow: 0 0 5px rgba(55, 185, 241, 0.5); /* Subtle focus effect */
+            border-color: var(--colorSecond); 
+            box-shadow: 0 0 5px rgba(55, 185, 241, 0.5); 
         }
 
         #contact-us .submit-button {
             display: inline-block;
-            background-color: var(--colorfirst); /* Button color */
-            color: white; /* Text color */
-            padding: 10px 30px; /* Padding for button */
-            font-weight: bold; /* Bold text */
-            border: none; /* Remove border */
-            border-radius: 5px; /* Rounded corners */
-            cursor: pointer; /* Pointer cursor */
-            transition: background-color 0.3s ease; /* Smooth hover transition */
+            background-color: var(--colorfirst); 
+            color: white;
+            padding: 10px 30px; 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: background-color 0.3s ease; 
         }
 
         #contact-us .submit-button:hover {
-            background-color: var(--colorSecond); /* Change color on hover */
+            background-color: var(--colorSecond); 
         }
 
 /* CSS of footer */
 .footer {
-    background: var(--colorSecond); /* Matches the header background */
+    background: var(--colorSecond);
 }
 
 .footer .box-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust grid for responsive layout */
-    gap: 20px; /* Space between boxes */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 20px; 
 }
 
 .footer .box-container .box h3 {
@@ -214,32 +213,32 @@ else{
 .footer .box-container .box a {
     display: block;
     font-size: 15px;
-    color: var(--colorDisabled); /* Subtle gray for links */
+    color: var(--colorDisabled); 
     padding: 5px 0;
-    transition: color 0.3s ease; /* Smooth hover effect */
+    transition: color 0.3s ease;
 }
 
 .footer .box-container .box a:hover {
-    color: var(--colorfirst); /* Highlighted color on hover */
+    color: var(--colorfirst);
 }
 
 .footer .box-container .box a i {
     padding-right: 10px;
-    color: var(--colorSecond); /* Icon-specific color */
+    color: var(--colorSecond);
 }
 
 .footer .end {
     margin-top: 20px;
     padding: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for separation */
+    border-top: 1px solid rgba(255, 255, 255, 0.2); 
     text-align: center;
-    color: var(--colorLabel); /* Light gray for text */
+    color: var(--colorLabel); 
     font-size: 16px;
 }
 
 .footer .end span {
-    color: var(--colorfirst); /* Primary color for emphasis */
-    font-weight: bold; /* Highlighted text */
+    color: var(--colorfirst);
+    font-weight: bold;
 }
 
     </style>
