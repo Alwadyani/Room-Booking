@@ -83,7 +83,7 @@
             <a href="#about-us">About us</a>
             <a href="profile.php">Profile</a>
             <a href="rooms.php">Rooms</a>
-            <a href="#contact">Contact us</a>
+            <a href="#contact-us">Contact us</a>
             <a href="#reviews">Reviews</a>
         </nav>
         <!--navbar end-->

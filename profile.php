@@ -24,7 +24,7 @@ if(isset($_POST['update_profile'])) {
 
     // photo upload if a new one is selected
     if(isset($_FILES['profile_picture']) && $_FILES['profile_picture']['size'] > 0) {
-        $target_dir = "uploads/";
+        $target_dir = "images/";
         $target_file = $target_dir . basename($_FILES["profile_picture"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -75,9 +75,9 @@ if(isset($_POST['update_profile'])) {
             text-align: center;
         }
         .left-section img {
-            width: 300px; 
-            height: 300px; 
-            margin-top: 25%;
+            width: 150px; 
+            height: 150px; 
+            margin-top: 20%;
             border-radius: 50%; 
             border: 3px solid #ddd;
         }

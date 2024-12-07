@@ -97,17 +97,20 @@ $result = $conn->query($sql);
 <section class="rooms-section">
     <h1>Our <span>Rooms</span></h1>
     <div class="rooms-grid">
-        <?php while ($room = $result->fetch_assoc()) { ?>
+        <?php 
+        $roomImages = ['A.png', 'B.png', 'C.jpg', 'D.jpg']; 
+        $roomNames = ['Room A', 'Room B', 'Room C', 'Room D'];
+        
+        for ($i = 0; $i < 4; $i++) { ?>
             <div class="room-card">
-                <img src="uploads/<?php echo $room['image']; ?>" alt="<?php echo $room['name']; ?>">
+                <img src="images/<?php echo $roomImages[$i]; ?>" alt="<?php echo $roomNames[$i]; ?>">
                 <div class="room-content">
-                    <h2><?php echo $room['name']; ?></h2>
-                    <p><?php echo $room['description']; ?></p>
+                    <h2><?php echo $roomNames[$i]; ?></h2>
+                    <p>-------------------------------------- <?php echo $roomNames[$i]; ?>.</p>
                     <div class="details">
-                        Capacity: <?php echo $room['capacity']; ?> People <br>
-                        Features: <?php echo $room['features']; ?>
+                        Capacity: <?php echo rand(10, 50); ?> People <br>
                     </div>
-                    <a href="book-room.php?id=<?php echo $room['id']; ?>" class="book-btn">Book Now</a>
+                    <a href="roomDetails.php?room=<?php echo $i + 1; ?>" class="book-btn">View Details</a>
                 </div>
             </div>
         <?php } ?>
