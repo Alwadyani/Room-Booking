@@ -2,8 +2,8 @@
 include 'connection.php';
 include 'header.php'; // Include the header for navigation
 
-// Fetch rooms data from the database
-$sql = "SELECT * FROM rooms"; // Assuming a `rooms` table in the database
+
+$sql = "SELECT * FROM rooms"; 
 $result = $conn->query($sql);
 
 ?>
