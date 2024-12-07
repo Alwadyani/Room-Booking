@@ -30,6 +30,7 @@ body{
   justify-content: center;
   background: var(--colorback);
 }
+
 .wrapper{
   position: relative;
   max-width: 430px;
