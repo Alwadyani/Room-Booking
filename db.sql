@@ -30,16 +30,19 @@ SET time_zone = "+00:00";
 CREATE TABLE `rooms` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `description` text NOT NULL,
   `capacity` int(11) NOT NULL,
+  `equipment` text NOT NULL,
   `image` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `rooms` (`name`, `description`,`capacity`,`image`) VALUES
-('Room A','Projector, Whiteboard, Wi-Fi', 10,'A.png'),
-('Room B','Projector, Conference Phone, Wi-Fi', 20, 'B.png'),
-('Room C','Whiteboard, Wi-Fi',15, 'C.png'),
-('Room D','Projector, Conference Phone, Wi-Fi, Air Conditioning',30,  'D.png');
+INSERT INTO `rooms` (`name`, `capacity`, `equipment`, `image`) VALUES
+('Room A', 10, 'Projector, Whiteboard, Wi-Fi', 'A.png'),
+('Room B', 20, 'Projector, Conference Phone, Wi-Fi', 'B.png'),
+('Room C', 15, 'Whiteboard, Wi-Fi', 'C.png'),
+('Room D', 30, 'Projector, Conference Phone, Wi-Fi, Air Conditioning', 'D.png');
+
+ALTER TABLE rooms CHANGE capacity Capacity INT(11) NOT NULL;
+
 
 
 -- --------------------------------------------------------

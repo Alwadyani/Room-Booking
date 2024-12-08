@@ -241,7 +241,7 @@ else{
     font-weight: bold;
 }
 
-    </style>
+</style>
 </head>
 <body>
     <?php include 'header.php'; ?>  <!-- Include header here -->

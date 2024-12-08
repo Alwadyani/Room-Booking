@@ -1,7 +1,6 @@
 <?php
 include 'connection.php';
 
-// Redirect if already logged in
 if(isset($_SESSION['id'])){
     header("Location: index.php");
 }
