@@ -2,10 +2,9 @@
 include 'connection.php';
 include 'header.php'; // Include the header for navigation
 
-// Fetch rooms data from the database
-$sql = "SELECT * FROM rooms"; // Assuming a `rooms` table in the database
+// Fetch rooms from the database
+$sql = "SELECT * FROM rooms"; 
 $result = $conn->query($sql);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -97,22 +96,29 @@ $result = $conn->query($sql);
 <section class="rooms-section">
     <h1>Our <span>Rooms</span></h1>
     <div class="rooms-grid">
-        <?php while ($room = $result->fetch_assoc()) { ?>
-            <div class="room-card">
-                <img src="uploads/<?php echo $room['image']; ?>" alt="<?php echo $room['name']; ?>">
-                <div class="room-content">
-                    <h2><?php echo $room['name']; ?></h2>
-                    <p><?php echo $room['description']; ?></p>
-                    <div class="details">
-                        Capacity: <?php echo $room['capacity']; ?> People <br>
-                        Features: <?php echo $room['features']; ?>
+        <?php 
+        // Check if rooms are available
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) { ?>
+                <div class="room-card">
+                    <img src="images/<?php echo $row['image']; ?>" alt="<?php echo $row['name']; ?>">
+                    <div class="room-content">
+                        <h2><?php echo $row['name']; ?></h2>
+                        <p><?php echo $row['description']; ?></p>
+                        <div class="details">
+                            Capacity: <?php echo $row['capacity']; ?> People
+                        </div>
+                        <a href="roomDetails.php?room=<?php echo $row['id']; ?>" class="book-btn">View Details</a>
                     </div>
-                    <a href="book-room.php?id=<?php echo $room['id']; ?>" class="book-btn">Book Now</a>
                 </div>
-            </div>
-        <?php } ?>
+            <?php }
+        } else {
+            echo "<p>No rooms available.</p>";
+        }
+        ?>
     </div>
 </section>
 
 </body>
 </html>
+

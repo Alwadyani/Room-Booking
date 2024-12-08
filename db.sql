@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2024 at 11:16 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Dec 07, 2024 at 09:28 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `roombooking`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rooms`
+--
+
+CREATE TABLE `rooms` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text NOT NULL,
+  `capacity` int(11) NOT NULL,
+  `image` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `rooms` (`name`, `description`,`capacity`,`image`) VALUES
+('Room A','Projector, Whiteboard, Wi-Fi', 10,'A.png'),
+('Room B','Projector, Conference Phone, Wi-Fi', 20, 'B.png'),
+('Room C','Whiteboard, Wi-Fi',15, 'C.png'),
+('Room D','Projector, Conference Phone, Wi-Fi, Air Conditioning',30,  'D.png');
+
 
 -- --------------------------------------------------------
 
@@ -40,11 +61,18 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `username`, `email`, `password`) VALUES
-(1, 'ahmed', 'alwadyani', '20197363@stu.uob.edu.bh', '123123');
+(1, 'ahmed', 'alwadyani', '20197363@stu.uob.edu.bh', '123123'),
+(2, 'Fatima', 'matrook', '202006773@stu.uob.edu.bh', '191422');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `rooms`
+--
+ALTER TABLE `rooms`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `user`
@@ -57,10 +85,16 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `rooms`
+--
+ALTER TABLE `rooms`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -8,7 +8,6 @@
     :root{
     --colorfirst:#8739F9; /*primary contents*/
     --colorSecond: #37B9F1; /*secondary contents*/
-    --colorthird: 
     --colorback: #F2F5F5; /*backgrouand for contents*/
     --colorShadow: #565360; /*main background*/
     --colorLabel: #908E9B; /*accessory use*/
@@ -83,7 +82,7 @@
             <a href="#about-us">About us</a>
             <a href="profile.php">Profile</a>
             <a href="rooms.php">Rooms</a>
-            <a href="#contact">Contact us</a>
+            <a href="#contact-us">Contact us</a>
             <a href="#reviews">Reviews</a>
         </nav>
         <!--navbar end-->
