@@ -2,10 +2,9 @@
 include 'connection.php';
 include 'header.php'; // Include the header for navigation
 
-
+// Fetch rooms from the database
 $sql = "SELECT * FROM rooms"; 
 $result = $conn->query($sql);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,24 +97,28 @@ $result = $conn->query($sql);
     <h1>Our <span>Rooms</span></h1>
     <div class="rooms-grid">
         <?php 
-        $roomImages = ['A.png', 'B.png', 'C.jpg', 'D.jpg']; 
-        $roomNames = ['Room A', 'Room B', 'Room C', 'Room D'];
-        
-        for ($i = 0; $i < 4; $i++) { ?>
-            <div class="room-card">
-                <img src="images/<?php echo $roomImages[$i]; ?>" alt="<?php echo $roomNames[$i]; ?>">
-                <div class="room-content">
-                    <h2><?php echo $roomNames[$i]; ?></h2>
-                    <p>-------------------------------------- <?php echo $roomNames[$i]; ?>.</p>
-                    <div class="details">
-                        Capacity: <?php echo rand(10, 50); ?> People <br>
+        // Check if rooms are available
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) { ?>
+                <div class="room-card">
+                    <img src="images/<?php echo $row['image']; ?>" alt="<?php echo $row['name']; ?>">
+                    <div class="room-content">
+                        <h2><?php echo $row['name']; ?></h2>
+                        <p><?php echo $row['description']; ?></p>
+                        <div class="details">
+                            Capacity: <?php echo $row['capacity']; ?> People
+                        </div>
+                        <a href="roomDetails.php?room=<?php echo $row['id']; ?>" class="book-btn">View Details</a>
                     </div>
-                    <a href="roomDetails.php?room=<?php echo $i + 1; ?>" class="book-btn">View Details</a>
                 </div>
-            </div>
-        <?php } ?>
+            <?php }
+        } else {
+            echo "<p>No rooms available.</p>";
+        }
+        ?>
     </div>
 </section>
 
 </body>
 </html>
+

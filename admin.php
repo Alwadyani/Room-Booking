@@ -1,6 +1,5 @@
 <?php
 include 'connection.php';
-include 'header.php'; // Include the header for navigation
-
+include 'adminDashboard.php'; // Include the header for navigation
 
 ?>

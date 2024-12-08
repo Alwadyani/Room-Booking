@@ -35,6 +35,13 @@ CREATE TABLE `rooms` (
   `image` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO `rooms` (`name`, `description`,`capacity`,`image`) VALUES
+('Room A','Projector, Whiteboard, Wi-Fi', 10,'A.png'),
+('Room B','Projector, Conference Phone, Wi-Fi', 20, 'B.png'),
+('Room C','Whiteboard, Wi-Fi',15, 'C.png'),
+('Room D','Projector, Conference Phone, Wi-Fi, Air Conditioning',30,  'D.png');
+
+
 -- --------------------------------------------------------
 
 --
