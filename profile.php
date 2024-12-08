@@ -133,7 +133,6 @@ if(isset($_POST['update_profile'])) {
             background-color: #37B9F1;
         }
 
-        /* Success message container */
         .success-message {
             position: fixed;
             top: 50%;
