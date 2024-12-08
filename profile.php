@@ -10,6 +10,7 @@ if(!isset($_SESSION["id"])){
 }
 
 // profile update
+$successMessage = '';
 if(isset($_POST['update_profile'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -17,7 +18,7 @@ if(isset($_POST['update_profile'])) {
     // Update name and email in the database
     $sql = "UPDATE user SET name='$name', email='$email' WHERE id=$id";
     if($conn->query($sql) === TRUE) {
-        echo "Profile updated successfully!";
+        $successMessage = "Profile updated successfully!";
     } else {
         echo "Error updating profile: " . $conn->error;
     }
@@ -33,7 +34,7 @@ if(isset($_POST['update_profile'])) {
             if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
                 $sql = "UPDATE user SET profile_picture='$target_file' WHERE id=$id";
                 if($conn->query($sql) === TRUE) {
-                    echo "Profile picture updated successfully!";
+                    $successMessage = "Profile picture updated successfully!";
                 } else {
                     echo "Error updating profile picture: " . $conn->error;
                 }
@@ -113,29 +114,51 @@ if(isset($_POST['update_profile'])) {
             border-radius: 5px;
         }
         .update-btn {
-    display: inline-block;
-    background-color: var(--colorfirst);
-    color: white;
-    padding: 15px 30px;
-    font-size: 18px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    width: 100%;
-    cursor: pointer;
-    margin-top: 20px;
-    border: none;
-}
+            display: inline-block;
+            background-color: #8739F9;
+            color: white;
+            padding: 15px 30px;
+            font-size: 18px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 20px;
+            border: none;
+        }
 
-.update-btn:hover {
-    background-color: #5e1dcb; 
-}
+        .update-btn:hover {
+            background-color: #37B9F1;
+        }
+
+        /* Success message container */
+        .success-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #37B9F1;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            display: none;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
 
 <?php include 'header.php'; ?>  <!-- Include header here -->
+
+<!-- Success message that appears when profile is updated -->
+<?php if ($successMessage): ?>
+    <div class="success-message" id="successMessage">
+        <?php echo $successMessage; ?>
+    </div>
+<?php endif; ?>
 
 <div class="container">
     <div class="left-section">
@@ -170,6 +193,15 @@ if(isset($_POST['update_profile'])) {
     </div>
 </div>
 
+<script>
+    // If there is a success message, show it for 5 seconds and hide after that
+    <?php if ($successMessage): ?>
+        document.getElementById('successMessage').style.display = 'block';
+        setTimeout(function() {
+            document.getElementById('successMessage').style.display = 'none';
+        }, 5000);  // Hide after 5 seconds
+    <?php endif; ?>
+</script>
+
 </body>
 </html>
-
