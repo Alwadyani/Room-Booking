@@ -5,18 +5,18 @@ if(isset($_SESSION['id'])){
     header("Location: index.php");
 }
 
-// Handle login logic
+// login 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $usernameemail = $_POST["usernameemail"];
     $password = $_POST["password"];
 
-    // Check if login is for admin
+    // login admin
     if($usernameemail == "admin" && $password == "123") {
         // Admin login
         $_SESSION["admin_login"] = true;
-        header("Location: admin.php"); // Redirect to admin page
+        header("Location: admin.php"); 
     } else {
-        // Regular user login
+        
         $sql = "SELECT * FROM user WHERE email = '$usernameemail' OR username ='$usernameemail'";
         $result = $conn->query($sql);
         $user = $result->fetch_assoc();
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             if ($password == $user['password']){
                 $_SESSION["login"] = true;
                 $_SESSION["id"] = $user["id"];
-                header("Location: index.php"); // Redirect to user home page
+                header("Location: index.php"); 
             }
             else{
                 echo "<script> alert('Username or password not matched')</script>";

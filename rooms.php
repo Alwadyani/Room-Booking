@@ -114,7 +114,7 @@ if ($result === false){
                 echo '<div class="room-content">';
                 echo '<h2>' . htmlspecialchars($row['name']) . '</h2>';
                 echo '<p>Capacity: ' . (!empty($row['capacity']) ? htmlspecialchars($row['capacity']) : 'Not specified') . ' people</p>';
-                echo '<a href="roomDetails.php?room=' . htmlspecialchars($row['id']) . '" class="book-btn">View Details</a>';
+                echo '<a href="room_details.php?room=' . htmlspecialchars($row['id']) . '" class="book-btn">View Details</a>';
                 echo '</div>';
                 echo '</div>';
             }
