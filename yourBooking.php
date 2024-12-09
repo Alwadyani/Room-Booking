@@ -1,21 +1,43 @@
 <?php
-include 'connection.php'; // Include the database connection file
-include 'header.php'; // Include the header for navigation
+include 'connection.php';
+include 'header.php';
 
-// Fetch user bookings
-$user_bookings = [];
-if (isset($_SESSION['user_id'])) {
-    $user_id = $_SESSION['user_id'];
-    $stmt_fetch = $conn->prepare("SELECT bookings.id AS booking_id, rooms.name AS room_name, bookings.booking_date, bookings.timeslot
-                                  FROM bookings
-                                  INNER JOIN rooms ON bookings.room_id = rooms.id
-                                  WHERE bookings.user_id = ?
-                                  ORDER BY bookings.booking_date, bookings.timeslot");
-    $stmt_fetch->bind_param("i", $user_id);
-    $stmt_fetch->execute();
-    $result_fetch = $stmt_fetch->get_result();
-    $user_bookings = $result_fetch->fetch_all(MYSQLI_ASSOC);
-    $stmt_fetch->close();
+if (!isset($_SESSION["id"])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['id'];
+
+
+$sql = "SELECT b.*, r.name AS room_name FROM bookings b INNER JOIN rooms r ON b.room_id = r.id WHERE b.user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+
+if (isset($_GET['delete'])) {
+    $booking_id = $_GET['delete'];
+
+    
+    $delete_sql = "DELETE FROM bookings WHERE id = ? AND user_id = ?";
+    $delete_stmt = $conn->prepare($delete_sql);
+    $delete_stmt->bind_param("ii", $booking_id, $user_id);
+    if ($delete_stmt->execute()) {
+        echo "Booking deleted successfully.";
+    } else {
+        echo "Error deleting booking.";
+    }
+}
+
+
+if (isset($_GET['edit'])) {
+    $booking_id = $_GET['edit'];
+
+    
+    header("Location: edit_booking.php?id=" . $booking_id);
+    exit();
 }
 ?>
 
@@ -24,129 +46,76 @@ if (isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Bookings - IT Room Booking System</title>
+    <title>Your Bookings</title>
     <style>
-        /* Styling for booking page */
-        .room-details {
-            padding: 40px 20px;
+        /* Styling for bookings list */
+        .bookings-list {
+            padding: 40px;
             max-width: 800px;
             margin: auto;
-            margin-top: 5%;
-            background: var(--colorback);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: #f9f9f9;
             border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .room-details h1 {
-            color: var(--colorShadow);
-            font-size: 2rem;
-            margin: 20px 0;
+        .booking-card {
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .room-details p {
-            font-size: 1rem;
-            color: var(--colorLabel);
-            line-height: 1.6;
-            margin-bottom: 15px;
+        .booking-card h3 {
+            margin: 0;
+            color: #333;
         }
 
-        .room-details .back-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: var(--colorfirst);
-            color: #fff;
+        .booking-card p {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .booking-actions {
+            margin-top: 10px;
+        }
+
+        .booking-actions a {
+            margin-right: 10px;
+            color: #007bff;
             text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s ease;
         }
 
-        .room-details .back-btn:hover {
-            background: var(--colorSecond);
-        }
-
-        .booking-table {
-            width: 100%;
-            margin-top: 30px;
-            border-collapse: collapse;
-        }
-
-        .booking-table th,
-        .booking-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-
-        .booking-table th {
-            background-color: var(--colorfirst);
-            color: #fff;
-        }
-
-        .booking-table td {
-            text-align: center;
-        }
-
-        .btn {
-            background-color: var(--colorfirst);
-            color: white;
-            padding: 5px 10px;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .btn:hover {
-            background-color: var(--colorSecond);
+        .booking-actions a.delete {
+            color: #dc3545;
         }
     </style>
 </head>
 <body>
 
-<section class="room-details">
-    <h1>Your Bookings</h1>
-    <?php
-    if (isset($_SESSION['booking_success'])) {
-        echo "<p style='color: green;'>" . $_SESSION['booking_success'] . "</p>";
-        unset($_SESSION['booking_success']);
-    }
-    if (isset($_SESSION['booking_error'])) {
-        echo "<p style='color: red;'>" . $_SESSION['booking_error'] . "</p>";
-        unset($_SESSION['booking_error']);
-    }
-    ?>
-    <table class="booking-table">
-        <thead>
-        <tr>
-            <th>Room</th>
-            <th>Date</th>
-            <th>Timeslot</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php if (count($user_bookings) > 0): ?>
-            <?php foreach ($user_bookings as $booking): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($booking['room_name']); ?></td>
-                    <td><?php echo htmlspecialchars($booking['booking_date']); ?></td>
-                    <td><?php echo htmlspecialchars($booking['timeslot']); ?></td>
-                    <td>
-                        <a href="booking.php?cancel_booking_id=<?php echo $booking['booking_id']; ?>" class="btn">Cancel</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="4">No bookings found.</td>
-            </tr>
-        <?php endif; ?>
-        </tbody>
-    </table>
+<section class="bookings-list">
+    <h2>Your Bookings</h2>
+
+    <?php if ($result->num_rows > 0): ?>
+        <?php while ($booking = $result->fetch_assoc()): ?>
+            <div class="booking-card">
+                <h3><?php echo htmlspecialchars($booking['room_name']); ?></h3>
+                <p><strong>Booking Date:</strong> <?php echo htmlspecialchars($booking['booking_date']); ?></p>
+                <p><strong>Booking Time:</strong> <?php echo htmlspecialchars($booking['booking_time']); ?></p>
+                
+                <!-- Booking action buttons -->
+                <div class="booking-actions">
+                    <a href="?edit=<?php echo $booking['id']; ?>">Edit</a>
+                    <a href="?delete=<?php echo $booking['id']; ?>" class="delete" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</a>
+                </div>
+            </div>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <p>You have no bookings yet.</p>
+    <?php endif; ?>
 </section>
 
 </body>
 </html>
 
 <?php $conn->close(); ?>
-
-

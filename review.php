@@ -4,7 +4,7 @@ include 'header.php';
 
 //  new comment submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['comment'])) {
-    $user_id = 1; // somthing wrong
+    $user_id = 1; // ((((somthing wrong here))))
     $comment = $conn->real_escape_string($_POST['comment']);
 
     $sql = "INSERT INTO reviews (room_id, user_id, comment) VALUES ('$user_id', '$comment')";
@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['comment'])) {
 }
 
 // all comments
-$sql = "SELECT user.username, reviews.comment, reviews.created_at 
-        FROM reviews 
-        JOIN user ON reviews.user_id = user.id 
+$sql = "SELECT user.username, reviews.comment, reviews.created_at
+        FROM reviews
+        JOIN user ON reviews.user_id = user.id
         ORDER BY reviews.created_at DESC";
 $result = $conn->query($sql);
 
