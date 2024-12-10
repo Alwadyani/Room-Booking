@@ -19,13 +19,14 @@ if(isset($_POST['update_profile'])) {
     $sql = "UPDATE user SET name='$name', email='$email' WHERE id=$id";
     if($conn->query($sql) === TRUE) {
         $successMessage = "Profile updated successfully!";
+        header("Refresh:2");
     } else {
         echo "Error updating profile: " . $conn->error;
     }
 
     // photo upload if a new one is selected
     if(isset($_FILES['profile_picture']) && $_FILES['profile_picture']['size'] > 0) {
-        $target_dir = "images/";
+        $target_dir = "images/ppicture/";
         $target_file = $target_dir . basename($_FILES["profile_picture"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -156,6 +157,7 @@ if(isset($_POST['update_profile'])) {
 <?php if ($successMessage): ?>
     <div class="success-message" id="successMessage">
         <?php echo $successMessage; ?>
+        
     </div>
 <?php endif; ?>
 
@@ -163,7 +165,7 @@ if(isset($_POST['update_profile'])) {
     <div class="left-section">
         <?php
             // Display user photo if available, otherwise show a default photo
-            $profile_picture = isset($user['profile_picture']) && $user['profile_picture'] ? $user['profile_picture'] : 'default_profile.jpg';
+            $profile_picture = isset($user['profile_picture']) && $user['profile_picture'] ? $user['profile_picture'] : 'images/ppicture/default_profile.jpg';
         ?>
         <img src="<?php echo $profile_picture; ?>" alt="Profile Picture">
         <div class="profile-info">
@@ -198,7 +200,7 @@ if(isset($_POST['update_profile'])) {
         document.getElementById('successMessage').style.display = 'block';
         setTimeout(function() {
             document.getElementById('successMessage').style.display = 'none';
-        }, 5000);  // Hide after 5 seconds
+        }, 3000);  // Hide after 3 seconds
     <?php endif; ?>
 </script>
 
