@@ -78,6 +78,21 @@ if (isset($_GET['room']) && is_numeric($_GET['room'])) {
         .room-details .back-btn:hover {
             background: var(--colorSecond);
         }
+        .book-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: var(--colorfirst);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .book-btn:hover {
+            background: var(--colorSecond);
+        }
     </style>
 </head>
 <body>
@@ -89,7 +104,9 @@ if (isset($_GET['room']) && is_numeric($_GET['room'])) {
         <p><strong>Capacity:</strong> <?php echo !empty($room['capacity']) ? htmlspecialchars($room['capacity']) : 'Not specified'; ?> people</p>
         <p><strong>equipment:</strong> <?php echo !empty($room['equipment']) ? htmlspecialchars($room['equipment']) : 'No equipment available.'; ?></p>
         <a href="rooms.php" class="back-btn">Back to Rooms</a>
-        <a href="booking.php" class="back-btn">Booking room</a>
+        <!-- <a href="booking.php" class="back-btn">Booking room</a>  -->
+       <?php
+                 echo '<a href="booking.php?room=' . htmlspecialchars($room['id']) . '" class="book-btn">Booking room</a>'; ?>
     <?php else: ?>
         <p>Room details could not be loaded.</p>
     <?php endif; ?>
