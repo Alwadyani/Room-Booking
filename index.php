@@ -188,7 +188,7 @@ else{
 
 /* CSS of footer */
 .footer {
-    background: var(--colorSecond);
+    background: var(--colorDisabled);
 }
 
 .footer .box-container {
@@ -200,21 +200,21 @@ else{
 .footer .box-container .box h3 {
     font-size: 25px;
     color: #243642 ;
-    padding: 15px 0;
+    padding: 15px 25px;
 }
 
 .footer .box-container .box p {
     font-size: 15px;
-    color: var(--colorLabel); 
-    padding: 10px 0;
+    color: var(--colorShadow); 
+    padding: 10px 30px;
     line-height: 1.8; 
 }
 
 .footer .box-container .box a {
     display: block;
     font-size: 15px;
-    color: var(--colorDisabled); 
-    padding: 5px 0;
+    color: var(--colorSecond); 
+    padding: 5px 30px;
     transition: color 0.3s ease;
 }
 
