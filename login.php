@@ -22,7 +22,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $user = $result->fetch_assoc();
         
         if($result->num_rows > 0 ){
-            if ($password == $user['password']){
+            $hashedPassword = $user['password'];
+            if (password_verify($password,$hashedPassword)){
                 $_SESSION["login"] = true;
                 $_SESSION["id"] = $user["id"];
                 header("Location: index.php"); 
