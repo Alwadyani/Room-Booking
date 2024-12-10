@@ -1,7 +1,6 @@
-<?php 
+<?php
 
 include 'connection.php';
-
 
 $rooms_sql = "SELECT * FROM rooms";
 $rooms_result = $conn->query($rooms_sql);

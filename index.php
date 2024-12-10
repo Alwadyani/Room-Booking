@@ -315,7 +315,5 @@ else{
         <div class="end"> &copy;2024-2025 by <span> University of Bahrain</span></div>
     </section><!-- section ends -->
 
-
-    <a href="logout.php">Logout</a>
 </body>
 </html>

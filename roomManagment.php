@@ -5,8 +5,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);}
 
 // Action and ID Variables
-$action = $_GET['action'] ?? 'list'; 
-$id = $_GET['id'] ??  null; 
+$action = $_GET['action'] ?? 'list';
+$id = $_GET['id'] ??  null;
 $message = '';
 
 // Handle Add/Edit Room Actions
