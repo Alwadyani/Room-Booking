@@ -28,7 +28,7 @@ else{
             color: var(--colorfirst);
         }
 
-        
+        /* Button Styles */
         .btn {
             display: inline-block;
             background-color: var(--colorfirst);
@@ -45,7 +45,7 @@ else{
             background-color: var(--colorSecond);
         }
 
-        
+        /* Centering the content */
         .container {
             display: flex;
             justify-content: center;
@@ -112,7 +112,7 @@ else{
             background-color: var(--colorSecond); 
         }
 
-        
+        /* Contact Us Section Styling */
         #contact-us {
             background-color: #F2F5F5; 
             padding: 50px 0; 
@@ -165,7 +165,7 @@ else{
         }
 
         #contact-us .form-group textarea:focus {
-            outline: none; 
+            outline: none; /* Remove focus outline */
             border-color: var(--colorSecond); 
             box-shadow: 0 0 5px rgba(55, 185, 241, 0.5); 
         }
@@ -241,13 +241,13 @@ else{
     font-weight: bold;
 }
 
-</style>
+    </style>
 </head>
 <body>
     <?php include 'header.php'; ?>  <!-- Include header here -->
     <div class="container">
         <h1>Welcome <span><?php echo $user['name']; ?> </span>to IT College Room Booking System</h1>
-        <a href="rooms.php" class="btn">Start Booking Rooms</a>
+        <a href="php/rooms.php" class="btn">Start Booking Rooms</a>
     </div>
 
     <!-- About Us Section -->
@@ -315,5 +315,7 @@ else{
         <div class="end"> &copy;2024-2025 by <span> University of Bahrain</span></div>
     </section><!-- section ends -->
 
+
+    <a href="logout.php">Logout</a>
 </body>
 </html>

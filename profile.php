@@ -10,7 +10,6 @@ if(!isset($_SESSION["id"])){
 }
 
 // profile update
-$successMessage = '';
 if(isset($_POST['update_profile'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -18,15 +17,14 @@ if(isset($_POST['update_profile'])) {
     // Update name and email in the database
     $sql = "UPDATE user SET name='$name', email='$email' WHERE id=$id";
     if($conn->query($sql) === TRUE) {
-        $successMessage = "Profile updated successfully!";
-        header("Refresh:2");
+        echo "Profile updated successfully!";
     } else {
         echo "Error updating profile: " . $conn->error;
     }
 
     // photo upload if a new one is selected
     if(isset($_FILES['profile_picture']) && $_FILES['profile_picture']['size'] > 0) {
-        $target_dir = "images/ppicture/";
+        $target_dir = "uploads/";
         $target_file = $target_dir . basename($_FILES["profile_picture"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -35,7 +33,7 @@ if(isset($_POST['update_profile'])) {
             if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
                 $sql = "UPDATE user SET profile_picture='$target_file' WHERE id=$id";
                 if($conn->query($sql) === TRUE) {
-                    $successMessage = "Profile picture updated successfully!";
+                    echo "Profile picture updated successfully!";
                 } else {
                     echo "Error updating profile picture: " . $conn->error;
                 }
@@ -77,9 +75,9 @@ if(isset($_POST['update_profile'])) {
             text-align: center;
         }
         .left-section img {
-            width: 150px; 
-            height: 150px; 
-            margin-top: 20%;
+            width: 300px; 
+            height: 300px; 
+            margin-top: 25%;
             border-radius: 50%; 
             border: 3px solid #ddd;
         }
@@ -115,57 +113,35 @@ if(isset($_POST['update_profile'])) {
             border-radius: 5px;
         }
         .update-btn {
-            display: inline-block;
-            background-color: #8739F9;
-            color: white;
-            padding: 15px 30px;
-            font-size: 18px;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            width: 100%;
-            cursor: pointer;
-            margin-top: 20px;
-            border: none;
-        }
+    display: inline-block;
+    background-color: var(--colorfirst);
+    color: white;
+    padding: 15px 30px;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 20px;
+    border: none;
+}
 
-        .update-btn:hover {
-            background-color: #37B9F1;
-        }
-
-        .success-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #37B9F1;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-            font-size: 18px;
-            display: none;
-            z-index: 1000;
-        }
+.update-btn:hover {
+    background-color: #5e1dcb; 
+}
     </style>
 </head>
 <body>
 
 <?php include 'header.php'; ?>  <!-- Include header here -->
 
-<!-- Success message that appears when profile is updated -->
-<?php if ($successMessage): ?>
-    <div class="success-message" id="successMessage">
-        <?php echo $successMessage; ?>
-        
-    </div>
-<?php endif; ?>
-
 <div class="container">
     <div class="left-section">
         <?php
             // Display user photo if available, otherwise show a default photo
-            $profile_picture = isset($user['profile_picture']) && $user['profile_picture'] ? $user['profile_picture'] : 'images/ppicture/default_profile.jpg';
+            $profile_picture = isset($user['profile_picture']) && $user['profile_picture'] ? $user['profile_picture'] : 'default_profile.jpg';
         ?>
         <img src="<?php echo $profile_picture; ?>" alt="Profile Picture">
         <div class="profile-info">
@@ -194,15 +170,6 @@ if(isset($_POST['update_profile'])) {
     </div>
 </div>
 
-<script>
-    // If there is a success message, show it for 5 seconds and hide after that
-    <?php if ($successMessage): ?>
-        document.getElementById('successMessage').style.display = 'block';
-        setTimeout(function() {
-            document.getElementById('successMessage').style.display = 'none';
-        }, 3000);  // Hide after 3 seconds
-    <?php endif; ?>
-</script>
-
 </body>
 </html>
+

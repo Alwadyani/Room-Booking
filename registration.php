@@ -9,13 +9,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $email = $_POST["email"];
     $password = $_POST["password"];
     $confirmpassword = $_POST["confirmpassword"];
-
-    $email_pattern = '/^[0-9]{8,9}@stu\.uob\.edu\.bh$/';
-    if (!preg_match($email_pattern, $email)) {
-        echo "<script>alert('Invalid email format. Please use your university email ex: 12345678@stu.uob.edu.bh');</script>";
-    }
-    else {
-      $duplicate = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username' OR email = '$email'");
+    $duplicate = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username' OR email = '$email'");
         if(mysqli_num_rows($duplicate) > 0){
             echo "<script>alert('username or Email already exist');</script>";
         }
@@ -25,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
             else{
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $query = "INSERT INTO user VALUES('','$name','$username','$email','$hashed_password','')";
+                $query = "INSERT INTO user VALUES('','$name','$username','$email','$hashed_password')";
                 mysqli_query($conn,$query);
                 echo "<script>alert('Register Successful');</script>";
                 $_SESSION['id'] = true;
@@ -34,7 +28,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             }
         }
-      }
     
 
 }
@@ -50,7 +43,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
     <div class="wrapper">
     <h2>Registration</h2>
-    <form action="" method="post" >
+    <form action="" method="post">
       <div class="input-box">
         <input type="text" name="name" id="name" placeholder="Enter your Name" required>
       </div>
@@ -72,7 +65,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       <div class="text">
         <h3>Already have an account?<a href="login.php"> Login</a></h3>
       </div>
-    </form>
+    </form>    
   </div>
 </body>
 </html>
