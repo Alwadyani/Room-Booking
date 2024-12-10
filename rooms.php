@@ -2,9 +2,15 @@
 include 'connection.php';
 include 'header.php'; // Include the header for navigation
 
-// Fetch rooms data from the database
-$sql = "SELECT * FROM rooms"; // Assuming a `rooms` table in the database
+// Fetch rooms from the database
+$sql = "SELECT * FROM rooms";
 $result = $conn->query($sql);
+
+
+if ($result === false){
+    echo"<p>Error retrieving rooms: ".$conn->error."</p>";
+    $result =null;
+}
 
 ?>
 <!DOCTYPE html>
@@ -97,22 +103,29 @@ $result = $conn->query($sql);
 <section class="rooms-section">
     <h1>Our <span>Rooms</span></h1>
     <div class="rooms-grid">
-        <?php while ($room = $result->fetch_assoc()) { ?>
-            <div class="room-card">
-                <img src="uploads/<?php echo $room['image']; ?>" alt="<?php echo $room['name']; ?>">
-                <div class="room-content">
-                    <h2><?php echo $room['name']; ?></h2>
-                    <p><?php echo $room['description']; ?></p>
-                    <div class="details">
-                        Capacity: <?php echo $room['capacity']; ?> People <br>
-                        Features: <?php echo $room['features']; ?>
-                    </div>
-                    <a href="book-room.php?id=<?php echo $room['id']; ?>" class="book-btn">Book Now</a>
-                </div>
-            </div>
-        <?php } ?>
+        <?php 
+        // Check if rooms are available
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo '<div class="room-card">';
+                if (!empty($row['image'])) {
+                    echo '<img src="images/' . htmlspecialchars($row['image']) . '" alt="' . htmlspecialchars($row['name']) . '">';
+                }
+                echo '<div class="room-content">';
+                echo '<h2>' . htmlspecialchars($row['name']) . '</h2>';
+                echo '<p>Capacity: ' . (!empty($row['capacity']) ? htmlspecialchars($row['capacity']) : 'Not specified') . ' people</p>';
+                echo '<a href="room_details.php?room=' . htmlspecialchars($row['id']) . '" class="book-btn">View Details</a>';
+                echo '</div>';
+                echo '</div>';
+            }
+        } else {
+            echo "<p>No rooms available.</p>";
+        }        
+        ?>
     </div>
 </section>
 
 </body>
 </html>
+<?php $conn->close();?>
+
