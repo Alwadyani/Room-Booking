@@ -27,6 +27,7 @@ if (isset($_GET['delete'])) {
     $delete_stmt->bind_param("ii", $booking_id, $user_id);
     if ($delete_stmt->execute()) {
         echo "Booking deleted successfully.";
+        header("refresh:2");
     } else {
         echo "Error deleting booking.";
     }
