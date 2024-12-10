@@ -1,28 +1,52 @@
 <?php
 include 'connection.php';
+
+
 if(!isset($_SESSION["id"])){
     header("Location: login.php");
 } else {
     $id = $_SESSION['id'];
     $sql = "SELECT * FROM user WHERE id = $id";
     $result = $conn->query($sql);
-    $user = $result->fetch_assoc();
-}
+    $user = $result->fetch_assoc();}
 
 // profile update
 $successMessage = '';
-if(isset($_POST['update_profile'])) {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+if (isset($_POST['update_profile'])) {
+    $name = $conn->real_escape_string($_POST['name']);
+    $email = $conn->real_escape_string($_POST['email']);
 
     // Update name and email in the database
     $sql = "UPDATE user SET name='$name', email='$email' WHERE id=$id";
-    if($conn->query($sql) === TRUE) {
+    if ($conn->query($sql) === TRUE) {
         $successMessage = "Profile updated successfully!";
-        header("Refresh:2");
-    } else {
-        echo "Error updating profile: " . $conn->error;
-    }
+        // Reload the user data
+        $sql = "SELECT * FROM user WHERE id = $id";
+        $result = $conn->query($sql);
+        $user = $result->fetch_assoc();
+    } else {die("Error updating profile: " . $conn->error);}
+
+    // Photo upload
+    if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['size'] > 0) {
+        $target_dir = "images/ppicture/";
+        $target_file = $target_dir . basename($_FILES["profile_picture"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        if (getimagesize($_FILES["profile_picture"]["tmp_name"])) {
+            if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
+                $sql = "UPDATE user SET profile_picture='$target_file' WHERE id=$id";
+                if ($conn->query($sql) === TRUE) {
+                    $successMessage .= " Profile picture updated successfully!";
+                } else {
+                    die("Error updating profile picture: " . $conn->error);
+                }
+            } else {
+                die("Error uploading file.");
+            }
+        } else {
+            die("Uploaded file is not a valid image.");}
+    }header("Refresh:2");} 
+    
 
     // photo upload if a new one is selected
     if(isset($_FILES['profile_picture']) && $_FILES['profile_picture']['size'] > 0) {
@@ -46,7 +70,6 @@ if(isset($_POST['update_profile'])) {
             echo "File is not an image.";
         }
     }
-}
 ?>
 
 <!DOCTYPE html>
@@ -147,6 +170,63 @@ if(isset($_POST['update_profile'])) {
             display: none;
             z-index: 1000;
         }
+
+        @media (max-width: 1024px) { 
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .left-section,
+    .right-section {
+        width: 90%;
+        text-align: center;
+    }
+    .left-section img {
+        margin-top: 10%;
+    }
+    .right-section {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 768px) { 
+    .container {
+        width: 100%;
+        padding: 20px;
+    }
+    .left-section img {
+        width: 120px;
+        height: 120px;
+    }
+    .form-group input {
+        font-size: 14px;
+        padding: 8px;
+    }
+    .update-btn {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+    h2 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) { 
+    .left-section img {
+        width: 100px;
+        height: 100px;
+    }
+    .form-group label {
+        font-size: 14px;
+    }
+    .form-group input {
+        font-size: 12px;
+    }
+    .update-btn {
+        font-size: 14px;
+    }
+}
+
     </style>
 </head>
 <body>

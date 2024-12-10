@@ -1,110 +1,173 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 
-:root{
-    --colorfirst:#8739F9; /*primary contents*/
+:root {
+    --colorfirst: #8739F9; /*primary contents*/
     --colorSecond: #37B9F1; /*secondary contents*/
-    --colorback: #F2F5F5; /*backgrouand for contents*/
+    --colorback: #F2F5F5; /*background for contents*/
     --colorShadow: #565360; /*main background*/
     --colorLabel: #908E9B; /*accessory use*/
     --colorDisabled: #E1DFE9; /*accessory use*/
-    --lengths1:0.25rem; /* small 1*/
-    --lengths2:0.375rem; /*small 2*/
-    --lengths3:0.5rem; /*small 3*/
-    --lengthm1:1rem; /*medium 1*/
-    --lengthm2:1.25rem; /*medium 2*/
-    --lengthm3:1.5rem; /*medium 3*/
-    --lengthl1:2rem; /*large 1*/
-    --lengthl2:3rem; /*large 2*/
-    --lengthl3:4rem; /*large 3*/
-}
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-body{
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--colorback);
+    --lengths1: 0.25rem; /* small 1*/
+    --lengths2: 0.375rem; /*small 2*/
+    --lengths3: 0.5rem; /*small 3*/
+    --lengthm1: 1rem; /*medium 1*/
+    --lengthm2: 1.25rem; /*medium 2*/
+    --lengthm3: 1.5rem; /*medium 3*/
+    --lengthl1: 2rem; /*large 1*/
+    --lengthl2: 3rem; /*large 2*/
+    --lengthl3: 4rem; /*large 3*/
 }
 
-.wrapper{
-  position: relative;
-  max-width: 430px;
-  width: 100%;
-  background: white;
-  padding: 34px;
-  border-radius: 6px;
-  box-shadow: 0 5px 10px var(--colorSecond);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
-.wrapper h2{
-  position: relative;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--colorShadow);
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--colorback);
 }
-.wrapper h2::before{
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 3px;
-  width: 28px;
-  border-radius: 12px;
-  background: var(--colorfirst);
+
+.wrapper {
+    position: relative;
+    max-width: 430px;
+    width: 100%;
+    background: white;
+    padding: 34px;
+    border-radius: 6px;
+    box-shadow: 0 5px 10px var(--colorSecond);
 }
-.wrapper form{
-  margin-top: 30px;
+
+.wrapper h2 {
+    position: relative;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--colorShadow);
 }
-.wrapper form .input-box{
-  height: 52px;
-  margin: 18px 0;
+
+.wrapper h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 28px;
+    border-radius: 12px;
+    background: var(--colorfirst);
 }
-form .input-box input{
-  height: 100%;
-  width: 100%;
-  outline: none;
-  padding: 0 15px;
-  font-size: 17px;
-  font-weight: 400;
-  color: var(--colorShadow);
-  border: 1.5px solid var(--colorDisabled);
-  border-bottom-width: 2.5px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
+
+.wrapper form {
+    margin-top: 30px;
 }
+
+.wrapper form .input-box {
+    height: 52px;
+    margin: 18px 0;
+}
+
+form .input-box input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    padding: 0 15px;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--colorShadow);
+    border: 1.5px solid var(--colorDisabled);
+    border-bottom-width: 2.5px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
 .input-box input:focus,
-.input-box input:valid{
-  border-color: var(--colorSecond);
+.input-box input:valid {
+    border-color: var(--colorSecond);
 }
-form h3{
-  color: var(--colorShadow);
-  font-size: 14px;
-  font-weight: 500;
-  margin-left: 10px;
+
+form h3 {
+    color: var(--colorShadow);
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 10px;
 }
-.input-box.button input{
-  color: #fff;
-  letter-spacing: 1px;
-  border: none;
-  background: var(--colorShadow);
-  cursor: pointer;
+
+.input-box.button input {
+    color: #fff;
+    letter-spacing: 1px;
+    border: none;
+    background: var(--colorShadow);
+    cursor: pointer;
 }
-.input-box.button input:hover{
-  background: var(--colorSecond);
+
+.input-box.button input:hover {
+    background: var(--colorSecond);
 }
-form .text h3{
- color: #333;
- width: 100%;
- text-align: center;
+
+form .text h3 {
+    color: #333;
+    width: 100%;
+    text-align: center;
 }
-form .text h3 a{
-  color: var(--colorfirst);
-  text-decoration: none;
+
+form .text h3 a {
+    color: var(--colorfirst);
+    text-decoration: none;
 }
-form .text h3 a:hover{
-  text-decoration: underline;
+
+form .text h3 a:hover {
+    text-decoration: underline;
+}
+
+/* Tablet View */
+@media screen and (max-width: 768px) {
+    .wrapper {
+        max-width: 90%;
+        padding: 20px;
+    }
+
+    .wrapper h2 {
+        font-size: 20px;
+    }
+
+    form .input-box input {
+        font-size: 15px;
+    }
+
+    .input-box.button input {
+        font-size: 16px;
+    }
+}
+
+/* Mobile View */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 0 10px;
+    }
+
+    .wrapper {
+        max-width: 100%;
+        padding: 18px;
+    }
+
+    .wrapper h2 {
+        font-size: 18px;
+    }
+
+    form .input-box input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .input-box.button input {
+        font-size: 15px;
+    }
+
+    form .text h3 {
+        font-size: 13px;
+    }
 }

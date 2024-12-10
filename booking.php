@@ -71,8 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         $stmt->close();
-    } else {
-        $error_message = "Please fill in all required fields.";
     }
 }
 ?>
@@ -155,12 +153,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form action="" method="POST">
-        <div class="form-group">
-            <label for="room_id">Choose a Room:</label>
-            <select name="room_id" id="room_id" required>
-                    <option value="<?php echo $roomm; ?>"><?php echo htmlspecialchars($roomm['name']); ?></option>
-            </select>
-        </div>
+    <div class="form-group">
+    <label for="room_id">Choose a Room:</label>
+    <select name="room_id" id="room_id" required>
+        <option value="<?php echo $roomm['id']; ?>"><?php echo htmlspecialchars($roomm['name']); ?></option>
+    </select>
+    </div>
+
 
         <div class="form-group">
             <label for="booking_date">Select Date:</label>
