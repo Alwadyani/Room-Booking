@@ -52,7 +52,7 @@ if (isset($_POST['book_room'])) {
     <style>
         /* Add some styling for the booking form */
         .booking-form {
-            width: 50%;
+            width: 40%;
             margin: 50px auto;
             background: #f9f9f9;
             padding: 30px;
@@ -67,9 +67,16 @@ if (isset($_POST['book_room'])) {
         .form-group label {
             font-weight: bold;
         }
+        .form-group select {
+            width: 94%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
 
-        .form-group input, .form-group select {
-            width: 100%;
+        .form-group input {
+            width: 90%;
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ddd;
@@ -78,17 +85,17 @@ if (isset($_POST['book_room'])) {
 
         .submit-btn {
             display: inline-block;
-            background-color: #4CAF50;
+            background-color: #8739F9;
             color: white;
-            padding: 15px 30px;
+            padding: 10px 15px;
             font-size: 18px;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
+            width: 40%;
         }
 
         .submit-btn:hover {
-            background-color: #45a049;
+            background-color: #37B9F1;
         }
 
         .error-message, .success-message {
