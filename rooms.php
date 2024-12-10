@@ -3,7 +3,7 @@ include 'connection.php';
 include 'header.php'; // Include the header for navigation
 
 // Fetch rooms from the database
-$sql = "SELECT * FROM rooms"; 
+$sql = "SELECT * FROM rooms";
 $result = $conn->query($sql);
 
 

@@ -8,39 +8,49 @@ if (!isset($_SESSION["id"])) {
 }
 
 $user_id = $_SESSION['id'];
-$selected_room_id = isset($_GET['room']) && is_numeric($_GET['room']) ? $_GET['room'] : null;
+$error_message = "";
+$success_message = "";
 
-if (isset($_POST['book_room'])) {
-    $room_id = $_POST['room_id'];
+// Fetch all available rooms for the dropdown
+$rooms = [];
+$sql = "SELECT * FROM rooms";
+$result = $conn->query($sql);
+while ($row = $result->fetch_assoc()) {
+    $rooms[] = $row;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $room_id = isset($_POST['room_id']) ? intval($_POST['room_id']) : null;
     $booking_date = $_POST['booking_date'];
     $booking_time = $_POST['booking_time'];
     $datetime = $booking_date . ' ' . $booking_time;
 
-    // Check if room is available for the selected datetime
-    $sql = "SELECT * FROM bookings WHERE room_id = ? AND booking_date = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("is", $room_id, $datetime);  // This should be the correct format
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $error_message = "The room is already booked for the selected date and time.";
-    } else {
-        
-        $sql = "INSERT INTO bookings (user_id, room_id, booking_date, booking_time) VALUES (?, ?, ?, ?)";
+    if ($room_id && $booking_date && $booking_time) {
+        $sql = "SELECT * FROM bookings WHERE room_id = ? AND booking_date = ? AND booking_time = ?";
         $stmt = $conn->prepare($sql);
-        
-        $stmt->bind_param("iiss", $user_id, $room_id, $booking_date, $booking_time);
-        
-        if ($stmt->execute()) {
-            $success_message = "Room booked successfully!";
-        } else {
-            $error_message = "Error booking the room: " . $conn->error;
-        }
-    }
-    $stmt->close();
-}
+        $stmt->bind_param("iss", $room_id, $booking_date, $booking_time);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
+        if ($result->num_rows > 0) {
+            $error_message = "The room is already booked for the selected date and time.";
+        } else {
+            
+            $sql = "INSERT INTO bookings (user_id, room_id, booking_date, booking_time) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("iiss", $user_id, $room_id, $booking_date, $booking_time);
+
+            if ($stmt->execute()) {
+                $success_message = "Room booked successfully!";
+            } else {
+                $error_message = "Error booking the room: " . $conn->error;
+            }
+        }
+        $stmt->close();
+    } else {
+        $error_message = "Please fill in all required fields.";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +60,6 @@ if (isset($_POST['book_room'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book a Room</title>
     <style>
-        /* Add some styling for the booking form */
         .booking-form {
             width: 40%;
             margin: 50px auto;
@@ -59,22 +68,19 @@ if (isset($_POST['book_room'])) {
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-
         .form-group {
             margin-bottom: 15px;
         }
-
         .form-group label {
             font-weight: bold;
         }
-        .form-group select {
+        .form-group select{
             width: 94%;
             padding: 10px;
             font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 5px;
         }
-
         .form-group input {
             width: 90%;
             padding: 10px;
@@ -82,7 +88,6 @@ if (isset($_POST['book_room'])) {
             border: 1px solid #ddd;
             border-radius: 5px;
         }
-
         .submit-btn {
             display: inline-block;
             background-color: #8739F9;
@@ -93,22 +98,18 @@ if (isset($_POST['book_room'])) {
             cursor: pointer;
             width: 40%;
         }
-
         .submit-btn:hover {
             background-color: #37B9F1;
         }
-
         .error-message, .success-message {
             color: #fff;
             padding: 10px;
             margin-bottom: 20px;
             text-align: center;
         }
-
         .error-message {
             background-color: #f44336;
         }
-
         .success-message {
             background-color: #4CAF50;
         }
@@ -119,28 +120,22 @@ if (isset($_POST['book_room'])) {
 <section class="booking-form">
     <h2>Book a Room</h2>
 
-    <?php if (isset($error_message)): ?>
+    <?php if ($error_message): ?>
         <div class="error-message"><?php echo $error_message; ?></div>
     <?php endif; ?>
 
-    <?php if (isset($success_message)): ?>
+    <?php if ($success_message): ?>
         <div class="success-message"><?php echo $success_message; ?></div>
     <?php endif; ?>
 
-    <form action="booking.php" method="POST">
+    <form action="" method="POST">
         <div class="form-group">
-            <h3 for="room_id">Choose The Room:</h3>
+            <label for="room_id">Choose a Room:</label>
             <select name="room_id" id="room_id" required>
-                <option value="">--Choose here--</option>
-                <?php
-               
-                $sql = "SELECT * FROM rooms";
-                $result = $conn->query($sql);
-                while ($row = $result->fetch_assoc()) {
-                    $selected = ($selected_room_id == $row['id']) ? "selected" : "";
-                    echo "<option value='" . $row['id'] . "' $selected>" . htmlspecialchars($row['name']) . "</option>";
-                }
-                ?>
+                <option value="">--Select Room--</option>
+                <?php foreach ($rooms as $room): ?>
+                    <option value="<?php echo $room['id']; ?>"><?php echo htmlspecialchars($room['name']); ?></option>
+                <?php endforeach; ?>
             </select>
         </div>
 
