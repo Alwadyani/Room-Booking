@@ -195,7 +195,7 @@ if(isset($_POST['update_profile'])) {
 </div>
 
 <script>
-    // If there is a success message, show it for 5 seconds and hide after that
+    // If there is a success message, show it for 3 seconds and hide after that
     <?php if ($successMessage): ?>
         document.getElementById('successMessage').style.display = 'block';
         setTimeout(function() {
