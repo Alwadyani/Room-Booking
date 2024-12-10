@@ -74,7 +74,8 @@ $bookings_result = $bookings_stmt->get_result();
             color: red;
         }
         .LB {
-            margin-top: 20px;
+            margin-top: 600%;
+            padding-top: 200%;
             color: #565360;
             text-decoration: none;
             font-weight: bold;
