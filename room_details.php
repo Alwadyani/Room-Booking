@@ -104,7 +104,7 @@ if (isset($_GET['room']) && is_numeric($_GET['room'])) {
         <p><strong>Capacity:</strong> <?php echo !empty($room['capacity']) ? htmlspecialchars($room['capacity']) : 'Not specified'; ?> people</p>
         <p><strong>equipment:</strong> <?php echo !empty($room['equipment']) ? htmlspecialchars($room['equipment']) : 'No equipment available.'; ?></p>
         <a href="rooms.php" class="back-btn">Back to Rooms</a>
-        <!-- <a href="booking.php" class="back-btn">Booking room</a>  -->
+    
        <?php
                  echo '<a href="booking.php?room=' . htmlspecialchars($room['id']) . '" class="book-btn">Booking room</a>'; ?>
     <?php else: ?>
