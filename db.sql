@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2024 at 07:01 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Generation Time: Dec 10, 2024 at 04:36 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,26 +31,20 @@ CREATE TABLE `bookings` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL,
-  `booking_date` int(11) NOT NULL,
-  `booking_time` int(11) NOT NULL
+  `booking_date` date DEFAULT NULL,
+  `booking_time` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-UPDATE bookings SET booking_time = '00:00:00' WHERE booking_time NOT LIKE '__:__:__';
-UPDATE bookings SET booking_time = CONCAT(booking_time, ':00') WHERE LENGTH(booking_time) = 2;
-
-ALTER TABLE bookings MODIFY COLUMN booking_date DATE, MODIFY COLUMN booking_time TIME;
-
 
 --
 -- Dumping data for table `bookings`
 --
 
 INSERT INTO `bookings` (`id`, `user_id`, `room_id`, `booking_date`, `booking_time`) VALUES
-(0, 2, 1, 2024, 0),
-(0, 2, 2, 2024, 0),
-(0, 2, 3, 2024, 0),
-(0, 2, 0, 2024, 0),
-(0, 2, 3, 2025, 0);
+(0, 2, 1, '0000-00-00', '00:00:00'),
+(0, 2, 2, '0000-00-00', '00:00:00'),
+(0, 2, 3, '0000-00-00', '00:00:00'),
+(0, 2, 0, '0000-00-00', '00:00:00'),
+(0, 2, 3, '0000-00-00', '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -109,7 +103,7 @@ CREATE TABLE `schedules` (
   `room_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `start_time` time NOT NULL,
-  `end_time` time NOT NULL,
+  `end_time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -132,10 +126,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `username`, `email`, `password`, `profile_picture`) VALUES
-(1, 'ahmed', 'alwadyani', '20197363@stu.uob.edu.bh', '123123', ''),
-(2, 'Fatima', 'matrook', '202006773@stu.uob.edu.bh', '191422', 'images/profile icone (2).png');
-
-
+(5, 'Fatima', 'matrook', '202006773@stu.uob.edu.bh', '$2y$10$CAmLWPQiEyjtb.PkcYQRYOMbD7eur1S0sAfxIbdbUmHHM5oxuxAzS', ''),
+(6, 'Ahmed', 'alwadyani', '20197363@stu.uob.edu.bh', '$2y$10$1ZajLPZhInZk998JKyUfvORf8Q0.RhgT43nzKMozWr5/FuzcRzE2W', '');
 
 --
 -- Indexes for dumped tables
@@ -191,7 +183,7 @@ ALTER TABLE `schedules`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
