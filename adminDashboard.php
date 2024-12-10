@@ -95,9 +95,9 @@
     <div class="container">
         <a href="admin.php" class="box">Admin Dashboard</a>
         <a href="roomManagment.php" class="box">Room Management</a>
-        <a href="Schedule.php" class="box">Room Schedule</a>
-        <a href="upcoming_bookings.php" class="box">Upcoming Bookings</a>
-        <a href="past_bookings.php" class="box">Previous Bookings</a>
+        <a href="SheduleRoom.php" class="box">Room Schedule</a>
+        <a href="upComing.php" class="box">Upcoming Bookings</a>
+        <a href="previous.php" class="box">Previous Bookings</a>
         <a href="Analysis.php" class="box">Analysis</a>
     </div>
 

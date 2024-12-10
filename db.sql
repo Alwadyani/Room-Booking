@@ -35,6 +35,12 @@ CREATE TABLE `bookings` (
   `booking_time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+UPDATE bookings SET booking_time = '00:00:00' WHERE booking_time NOT LIKE '__:__:__';
+UPDATE bookings SET booking_time = CONCAT(booking_time, ':00') WHERE LENGTH(booking_time) = 2;
+
+ALTER TABLE bookings MODIFY COLUMN booking_date DATE, MODIFY COLUMN booking_time TIME;
+
+
 --
 -- Dumping data for table `bookings`
 --
@@ -129,6 +135,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `name`, `username`, `email`, `password`, `profile_picture`) VALUES
 (1, 'ahmed', 'alwadyani', '20197363@stu.uob.edu.bh', '123123', ''),
 (2, 'Fatima', 'matrook', '202006773@stu.uob.edu.bh', '191422', 'images/profile icone (2).png');
+
+
 
 --
 -- Indexes for dumped tables
