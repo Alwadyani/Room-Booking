@@ -7,6 +7,30 @@ if (!isset($_SESSION["id"])) {
     exit();
 }
 
+if (isset($_GET['room']) && is_numeric($_GET['room'])) {
+    $roomId = $_GET['room'];
+
+    //room details from the database
+    $sqlll = "SELECT * FROM rooms WHERE id = ?";
+    $stmtt = $conn->prepare($sqlll);
+    $stmtt->bind_param("i", $roomId);
+    $stmtt->execute();
+    $resultt = $stmtt->get_result();
+
+    if ($resultt->num_rows > 0) {
+        $roomm = $resultt->fetch_assoc();
+    } else {
+        echo "<p>Room not found.</p>";
+        $roomm = null;
+    }
+    $stmtt->close();
+} else {
+    echo "<p>Invalid room ID.</p>";
+    $roomm = null;
+}
+
+
+
 $user_id = $_SESSION['id'];
 $error_message = "";
 $success_message = "";
@@ -90,16 +114,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         .submit-btn {
             display: inline-block;
-            background-color: #8739F9;
-            color: white;
-            padding: 10px 15px;
-            font-size: 18px;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--colorfirst);
+            color: #fff;
+            text-decoration: none;
             border-radius: 5px;
-            cursor: pointer;
-            width: 40%;
+            font-weight: bold;
+            transition: background 0.3s ease;
         }
         .submit-btn:hover {
-            background-color: #37B9F1;
+            background: var(--colorSecond);
+
         }
         .error-message, .success-message {
             color: #fff;
@@ -132,10 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="room_id">Choose a Room:</label>
             <select name="room_id" id="room_id" required>
-                <option value="">--Select Room--</option>
-                <?php foreach ($rooms as $room): ?>
-                    <option value="<?php echo $room['id']; ?>"><?php echo htmlspecialchars($room['name']); ?></option>
-                <?php endforeach; ?>
+                    <option value="<?php echo $roomm; ?>"><?php echo htmlspecialchars($roomm['name']); ?></option>
             </select>
         </div>
 
@@ -148,7 +171,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label for="booking_time">Select Time:</label>
             <input type="time" name="booking_time" id="booking_time" required>
         </div>
-
         <button type="submit" name="book_room" class="submit-btn">Book Room</button>
     </form>
 </section>
