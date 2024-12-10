@@ -21,7 +21,7 @@
     }
 
     .header {
-        background-color: var(--colorSecond);
+        background-color: var(--colorDisabled);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -110,18 +110,20 @@
         <nav class="navbar">
             <a href="index.php">Home</a>
             <a href="#about-us">About Us</a>
-            <a href="profile.php">Profile</a>
             <a href="rooms.php">Rooms</a>
             <a href="yourBooking.php">Booking</a>
             <a href="#contact-us">Contact Us</a>
             <a href="review.php">Reviews</a>
-            <a href="logout.php">Logout</a>
+            <a href="profile.php"><i class="fa-solid fa-user" id="pro-btn"></i></a>
+            <a href="logout.php"><div class="fa-solid fa-right-from-bracket" id="pro-btn"></div> Logout</a>
         </nav>
 
         <!-- Icons -->
         <div class="icons">
             <i class="fas fa-bars" id="menu-btn"></i>
         </div>
+
+
     </header>
     <!--Header end-->
 </body>
