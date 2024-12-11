@@ -1,5 +1,4 @@
 <?php
-// Include required files
 include 'connection.php';
 include 'header.php';
 
@@ -11,7 +10,7 @@ if (!isset($_SESSION["id"])) {
 
 $user_id = $_SESSION['id'];
 
-// Fetch bookings for the logged-in user
+// Fetch the bookings for the user
 $sql = "SELECT b.*, r.name AS room_name, r.image AS room_image FROM bookings b INNER JOIN rooms r ON b.room_id = r.id WHERE b.user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -19,26 +18,28 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 // Handle delete request
-if (isset($_GET['delete'])) {
-    $booking_id = $_GET['delete'];
+if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+    $booking_id = intval($_GET['delete']); 
 
+    // Prepare the delete SQL query
     $delete_sql = "DELETE FROM bookings WHERE id = ? AND user_id = ?";
     $delete_stmt = $conn->prepare($delete_sql);
     $delete_stmt->bind_param("ii", $booking_id, $user_id);
+
+    // Execute the delete query
     if ($delete_stmt->execute()) {
-        echo "Booking deleted successfully.";
-        header("refresh:2");
+        if ($delete_stmt->affected_rows > 0) {
+            echo "<p style='color: green;'>Booking deleted successfully.</p>";
+        } else {
+            echo "<p style='color: red;'>Booking not found or you don't have permission to delete it.</p>";
+        }
     } else {
-        echo "Error deleting booking.";
+        echo "<p style='color: red;'>Error deleting booking: " . htmlspecialchars($conn->error) . "</p>";
     }
+
+    $delete_stmt->close();
 }
 
-// Handle edit request
-if (isset($_GET['edit'])) {
-    $booking_id = $_GET['edit'];
-    header("Location: edit_booking.php?id=" . $booking_id);
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +52,8 @@ if (isset($_GET['edit'])) {
         .bookings-list {
             padding: 40px;
             max-width: 800px;
-            margin: auto;
+            margin-top: 5%;
+            margin-left: 14%;
             background: #f9f9f9;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -93,6 +95,74 @@ if (isset($_GET['edit'])) {
             display: flex;
             align-items: center;
         }
+        /* Desktop view */
+        @media screen and (min-width: 1025px) {
+            .bookings-list {
+                margin-left: 10%;
+                margin-right: 10%;
+                padding: 40px;
+            }
+
+            .room-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .booking-card {
+                padding: 30px;
+            }
+        }
+
+        /* Tablet view */
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            .bookings-list {
+                margin-left: 5%;
+                margin-right: 5%;
+                padding: 20px;
+            }
+
+            .room-image {
+                width: 100px;
+                height: 100px;
+            }
+
+            .booking-card {
+                padding: 20px;
+            }
+        }
+
+        /* Mobile view */
+        @media screen and (max-width: 767px) {
+            .bookings-list {
+                margin-left: 2%;
+                margin-right: 2%;
+                padding: 15px;
+            }
+
+            .room-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .booking-card {
+                padding: 15px;
+            }
+
+            .room-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .booking-actions {
+                text-align: center;
+            }
+
+            .booking-actions a {
+                display: block;
+                margin-top: 5px;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -113,25 +183,20 @@ if (isset($_GET['edit'])) {
                     <h3><?php echo htmlspecialchars($booking['room_name']); ?></h3>
                 </div>
 
-                <p>
-                    <strong>Booking Date:</strong> 
+                <p><strong>Booking Date:</strong> 
                     <?php 
                     // Format the booking date
                     $bookingDate = new DateTime($booking['booking_date']); 
                     echo $bookingDate->format('d-m-Y'); 
                     ?>
                 </p>
-                <p>
-                    <strong>Booking Time:</strong> 
+
+                <p><strong>Booking Time:</strong> 
                     <?php 
                     $rawBookingTime = $booking['booking_time']; 
-
-                    // Add ":00" for missing minutes
                     if (preg_match('/^\d{1,2}$/', $rawBookingTime)) {
                         $rawBookingTime .= ":00"; 
                     }
-
-                    // Validate and display the time
                     if (preg_match('/^\d{1,2}:\d{2}(:\d{2})?$/', $rawBookingTime)) {
                         $bookingTime = new DateTime($rawBookingTime); 
                         echo $bookingTime->format('H:i'); 
@@ -142,7 +207,6 @@ if (isset($_GET['edit'])) {
                 </p>
 
                 <div class="booking-actions">
-                    <a href="editBooking.php?edit=<?php echo $booking['id']; ?>">Edit</a>
                     <a href="?delete=<?php echo $booking['id']; ?>" class="delete" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</a>
                 </div>
             </div>
@@ -159,5 +223,3 @@ if (isset($_GET['edit'])) {
 // Close the database connection
 $conn->close(); 
 ?>
-
-

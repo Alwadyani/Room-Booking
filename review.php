@@ -74,13 +74,15 @@ if (!$result) {
             text-align: center;
         }
         textarea {
-            width: 100%;
-            height: 80px;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+        width: 96%;
+        height: 80px;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: auto;
+        resize: none;   }
+
         button {
             padding: 10px 20px;
             background: #8739F9;

@@ -1,22 +1,52 @@
 <?php
-
 include 'connection.php';
 
+// Fetch all bookings with user information
+$sql = "SELECT b.*, r.name AS room_name, r.image AS room_image, u.name AS user_name, u.email AS user_email 
+        FROM bookings b 
+        INNER JOIN rooms r ON b.room_id = r.id
+        INNER JOIN users u ON b.user_id = u.id";
 
-$bookings_sql = "
-    SELECT b.*, r.name AS room_name, u.name AS student_name
-    FROM bookings b
-    INNER JOIN rooms r ON b.room_id = r.id
-    INNER JOIN user u ON b.user_id = u.id
-    WHERE b.booking_date < ? 
-    ORDER BY b.booking_date DESC, b.booking_time DESC
-";
+// Prepare the SQL query
+$stmt = $conn->prepare($sql);
+if ($stmt === false) {
+    // Error preparing the query
+    echo "Error preparing the SQL query: " . htmlspecialchars($conn->error);
+    exit;
+}
 
+$stmt->execute();
+$result = $stmt->get_result();
 
-$bookings_stmt = $conn->prepare($bookings_sql);
-$bookings_stmt->bind_param("s", $date);
-$bookings_stmt->execute();
-$bookings_result = $bookings_stmt->get_result();
+// Handle delete request (admin can delete any booking)
+if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+    $booking_id = intval($_GET['delete']); 
+
+    // Prepare the delete SQL query
+    $delete_sql = "DELETE FROM bookings WHERE id = ?";
+    $delete_stmt = $conn->prepare($delete_sql);
+    if ($delete_stmt === false) {
+        // Error preparing the delete query
+        echo "Error preparing the delete query: " . htmlspecialchars($conn->error);
+        exit;
+    }
+
+    $delete_stmt->bind_param("i", $booking_id);
+
+    // Execute the delete query
+    if ($delete_stmt->execute()) {
+        if ($delete_stmt->affected_rows > 0) {
+            echo "<p style='color: green;'>Booking deleted successfully.</p>";
+        } else {
+            echo "<p style='color: red;'>Booking not found.</p>";
+        }
+    } else {
+        echo "<p style='color: red;'>Error deleting booking: " . htmlspecialchars($conn->error) . "</p>";
+    }
+
+    $delete_stmt->close();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -24,145 +54,181 @@ $bookings_result = $bookings_stmt->get_result();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Previous Bookings</title>
+    <title>Admin Dashboard - Bookings</title>
     <style>
-    :root {
-            --colorfirst: #8739F9; /*primary contents*/
-            --colorSecond: #37B9F1; /*secondary contents*/
-            --colorback: #F2F5F5; /*background for contents*/
-            --colorShadow: #565360; /*main background*/
-            --colorLabel: #908E9B; /*accessory use*/
-            --colorDisabled: #E1DFE9; /*accessory use*/
-            --lengths1: 0.25rem; /* small 1*/
-            --lengths2: 0.375rem; /*small 2*/
-            --lengths3: 0.5rem; /*small 3*/
-            --lengthm1: 1rem; /*medium 1*/
-            --lengthm2: 1.25rem; /*medium 2*/
-            --lengthm3: 1.5rem; /*medium 3*/
-            --lengthl1: 2rem; /*large 1*/
-            --lengthl2: 3rem; /*large 2*/
-            --lengthl3: 4rem; /*large 3*/
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-
-        h2 {
-            text-align: center;
-            margin-top: 50px;
-            font-size: 2em;
-            color: var(--colorfirst);
-        }
-
-        .table-container {
-            width: 80%;
-            margin: 0 auto;
-            background-color: white;
+        .bookings-list {
+            padding: 40px;
+            max-width: 1000px;
+            margin-top: 5%;
+            margin-left: 10%;
+            background: #f9f9f9;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin-top: 30px;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: var(--colorfirst);
-            color: white;
-            font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        td {
-            font-size: 1.1em;
-        }
-
-        .back-btn {
-            display: block;
-            width: 200px;
-            margin: 30px auto;
-            text-align: center;
-            padding: 12px;
-            background-color: var(--colorfirst);
-            color: white;
-            font-size: 1.1em;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        .back-btn:hover {
-            background-color: var(--colorShadow);
-        }
-
-        .LB {
-            margin-top: 20px;
-            color: #565360;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 10px 20px;
-            border: 2px solid #565360;
+        .booking-card {
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
             border-radius: 10px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        .LB:hover {
-            background-color: #565360;
-            color: white;
+        .booking-card h3 {
+            margin: 0;
+            color: #333;
+        }
+        .booking-card p {
+            margin: 10px 0;
+            color: #666;
+        }
+        .booking-actions {
+            margin-top: 10px;
+        }
+        .booking-actions a {
+            margin-right: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .booking-actions a.delete {
+            color: #dc3545;
+        }
+        .room-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
+        .room-info {
+            display: flex;
+            align-items: center;
+        }
+        /* Desktop view */
+        @media screen and (min-width: 1025px) {
+            .bookings-list {
+                margin-left: 10%;
+                margin-right: 10%;
+                padding: 40px;
+            }
+
+            .room-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .booking-card {
+                padding: 30px;
+            }
+        }
+
+        /* Tablet view */
+        @media screen and (max-width: 1024px) and (min-width: 768px) {
+            .bookings-list {
+                margin-left: 5%;
+                margin-right: 5%;
+                padding: 20px;
+            }
+
+            .room-image {
+                width: 100px;
+                height: 100px;
+            }
+
+            .booking-card {
+                padding: 20px;
+            }
+        }
+
+        /* Mobile view */
+        @media screen and (max-width: 767px) {
+            .bookings-list {
+                margin-left: 2%;
+                margin-right: 2%;
+                padding: 15px;
+            }
+
+            .room-image {
+                width: 80px;
+                height: 80px;
+            }
+
+            .booking-card {
+                padding: 15px;
+            }
+
+            .room-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .booking-actions {
+                text-align: center;
+            }
+
+            .booking-actions a {
+                display: block;
+                margin-top: 5px;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
 
-    <a href="adminDashboard.php" class="LB">Back to Dashboard</a>
-    <a href="logout.php" class="LB">Logout</a>
-    <h2>Previous Room Bookings</h2>
-     <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Room</th>
-                    <th>Booking Date</th>
-                    <th>Booking Time</th>
-                    <th>Student Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                while ($booking = $bookings_result->fetch_assoc()):
-                    $bookingTime = new DateTime($booking['booking_time']);
-                    $formattedBookingTime = $bookingTime->format('H:i');
-                ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($booking['room_name']); ?></td>
-                        <td><?php echo date('d-m-Y', strtotime($booking['booking_date'])); ?></td>
-                        <td><?php echo $formattedBookingTime; ?></td>
-                        <td><?php echo htmlspecialchars($booking['student_name']); ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
+<section class="bookings-list">
+    <h2>All Bookings</h2>
+
+    <?php if ($result->num_rows > 0): ?>
+        <?php while ($booking = $result->fetch_assoc()): ?>
+            <div class="booking-card">
+                <div class="room-info">
+                    <!-- Display Room Image -->
+                    <?php if ($booking['room_image']): ?>
+                        <img src="images/<?php echo htmlspecialchars($booking['room_image']); ?>" alt="Room Image" class="room-image">
+                    <?php else: ?>
+                        <img src="images/default-room.jpg" alt="Default Room Image" class="room-image">
+                    <?php endif; ?>
+                    <h3><?php echo htmlspecialchars($booking['room_name']); ?></h3>
+                </div>
+
+                <p><strong>User Name:</strong> <?php echo htmlspecialchars($booking['user_name']); ?></p>
+                <p><strong>User Email:</strong> <?php echo htmlspecialchars($booking['user_email']); ?></p>
+                <p><strong>Booking Date:</strong> 
+                    <?php 
+                    // Format the booking date
+                    $bookingDate = new DateTime($booking['booking_date']); 
+                    echo $bookingDate->format('d-m-Y'); 
+                    ?>
+                </p>
+
+                <p><strong>Booking Time:</strong> 
+                    <?php 
+                    $rawBookingTime = $booking['booking_time']; 
+                    if (preg_match('/^\d{1,2}$/', $rawBookingTime)) {
+                        $rawBookingTime .= ":00"; 
+                    }
+                    if (preg_match('/^\d{1,2}:\d{2}(:\d{2})?$/', $rawBookingTime)) {
+                        $bookingTime = new DateTime($rawBookingTime); 
+                        echo $bookingTime->format('H:i'); 
+                    } else {
+                        echo htmlspecialchars($rawBookingTime) ?: 'Invalid time format';
+                    }
+                    ?>
+                </p>
+
+                <div class="booking-actions">
+                    <a href="?delete=<?php echo $booking['id']; ?>" class="delete" onclick="return confirm('Are you sure you want to delete this booking?');">Delete</a>
+                </div>
+            </div>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <p>No bookings found.</p>
+    <?php endif; ?>
+</section>
 
 </body>
 </html>
+
+<?php 
+// Close the database connection
+$conn->close(); 
+?>

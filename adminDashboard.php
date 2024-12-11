@@ -6,12 +6,12 @@
     <title>Dashboard</title>
     <style>
         :root {
-            --colorfirst: #8739F9; 
-            --colorSecond: #37B9F1; 
+            --colorfirst: #8739F9;
+            --colorSecond: #37B9F1;
             --colorback: #F2F5F5;
-            --colorShadow: #565360; 
-            --colorLabel: #908E9B; 
-            --colorDisabled: #E1DFE9; 
+            --colorShadow: #565360;
+            --colorLabel: #908E9B;
+            --colorDisabled: #E1DFE9;
         }
 
         body {
@@ -93,7 +93,7 @@
         <h1>Welcome to Admin IT College Room Booking Dashboard</h1>
     <!-- Dashboard Boxes -->
     <div class="container">
-        <a href="admin.php" class="box">Admin Dashboard</a>
+        <a href="adminComment.php" class="box">View Comments</a>
         <a href="roomManagment.php" class="box">Room Management</a>
         <a href="SheduleRoom.php" class="box">Room Schedule</a>
         <a href="upComing.php" class="box">Upcoming Bookings</a>
